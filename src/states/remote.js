@@ -1,5 +1,4 @@
-const config = require('../config');
-// const rotate = require('../controllers/motion/rotate');
+// const config = require('../config');
 
 /**
  * Remote
@@ -44,12 +43,12 @@ module.exports = ({ logger, controllers, socket }) => {
 
   function forward() {
     logger.log('forward', 'remote');
-    main.forward(config.speed.straight.fast);
+    main.forward(20);
   }
 
   function reverse() {
     logger.log('reverse', 'remote');
-    main.reverse(config.speed.straight.medium);
+    main.reverse(20);
   }
 
   function stopMotors() {
@@ -62,19 +61,15 @@ module.exports = ({ logger, controllers, socket }) => {
   function rotateLeft() {
     logger.log('rotateLeft', 'remote');
 
-    // rotate(main, -90);
-
-    // main.rotate(config.speed.rotate.fast, -90)
-    //   .then(main.stop.bind(null, 1));
+    main.rotate(20, -90)
+      .then(main.stop.bind(null, 1));
   }
 
   function rotateRight() {
     logger.log('rotateRight', 'remote');
 
-    // rotate(main, 90);
-
-    // main.rotate(config.speed.rotate.fast, 90)
-    //   .then(main.stop.bind(null, 1));
+    main.rotate(20, 90)
+      .then(main.stop.bind(null, 1));
   }
 
   constructor();
