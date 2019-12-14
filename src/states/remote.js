@@ -1,3 +1,4 @@
+// const getInitialPosition = require('../utils/getInitialPosition'); // FIXME get from robotlib
 // const config = require('../config');
 
 /**
@@ -5,8 +6,8 @@
  * @param {Object} options
  * @return {Object}
  */
-module.exports = ({ logger, controllers, socket }) => {
-  const { main } = controllers;
+module.exports = ({ arena, logger, controllers, socket }) => {
+  const { main, odometry } = controllers;
 
   /**
    * Constructor
@@ -20,6 +21,11 @@ module.exports = ({ logger, controllers, socket }) => {
    */
   function start() {
     logger.log('start', 'remote');
+
+    // const { x, y } = getInitialPosition(); // FIXME get initial pose util
+    const x = 19; // FIXME rear distance
+    const y = (arena.height / 4); // FIXME left distance + (arena.height / 2)
+    odometry.setStartPose(x, y + (arena.height / 2));
 
     socket.on('remote.forward', forward);
     socket.on('remote.reverse', reverse);

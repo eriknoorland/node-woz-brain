@@ -10,6 +10,7 @@ const MainController = require('woz-main-controller');
 const robotlib = require('robotlib');
 const config = require('./config');
 const states = require('./states');
+const odometryController = require('./controllers/odometry');
 const telemetryController = require('./controllers/telemetry');
 const getUSBDevicePorts = require('./utils/usb/getUSBDevicePorts');
 
@@ -23,7 +24,17 @@ const expectedUSBDevices = [
   { vendorId: '16c0', productId: '0483', name: 'main' }
 ];
 
-let mainController;
+// FIXME get from config
+const GEAR_RATIO = 46.85;
+const TICKS_PER_REVOLUTION = 48 * GEAR_RATIO;
+const WHEEL_DIAMETER = 6;
+const WHEEL_BASE = 16.8;
+const WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+const DISTANCE_PER_TICK = WHEEL_CIRCUMFERENCE / TICKS_PER_REVOLUTION;
+
+let arena;
+let main;
+let odometry;
 let state;
 
 app.use(express.static(process.env.TELEMETRY_PUBLIC_FOLDER));
@@ -37,6 +48,7 @@ function init() {
 
   getUSBDevicePorts(expectedUSBDevices)
     .then(initUSBDevices)
+    .then(initOdometry)
     .then(initTelemetry)
     .then(updateStateOptions);
 }
@@ -51,6 +63,9 @@ io.on('connection', (socket) => {
   socket.on('start', onStart.bind(null, socket));
   socket.on('stop', onStop);
   socket.on('shutdown', onShutdown);
+  socket.on('selected_arena', (selectedArena) => {
+    defaultStateOptions.arena = selectedArena;
+  });
 
   socket.emit('setup', {
     states: states,
@@ -110,14 +125,14 @@ function onShutdown() {
  * @return {Object}
  */
 function initMainController(portName) {
-  mainController = MainController(portName);
+  main = MainController(portName);
 
-  mainController.init()
+  main.init()
     .then(() => {
       logger.log('main controller initialized!', 'app', 'cyan');
     });
 
-  return mainController;
+  return main;
 }
 
 /**
@@ -164,6 +179,19 @@ function initUSBDevices(usbPorts) {
  * @param {Object} usbDevices
  * @return {Promise}
  */
+function initOdometry(usbDevices) {
+  const { main } = usbDevices;
+
+  odometry = odometryController(main, WHEEL_BASE, DISTANCE_PER_TICK);
+
+  return Promise.resolve(usbDevices);
+}
+
+/**
+ *
+ * @param {Object} usbDevices
+ * @return {Promise}
+ */
 function initTelemetry(usbDevices) {
   const { lidar, main } = usbDevices;
 
@@ -171,6 +199,7 @@ function initTelemetry(usbDevices) {
 
   return new Promise((resolve) => {
     telemetryController(io, config, {
+      controllers: { odometry },
       sensors: { main, lidar },
     });
 
@@ -187,6 +216,7 @@ function updateStateOptions({ lidar, main }) {
   logger.log('update state options');
 
   return new Promise((resolve) => {
+    defaultStateOptions.controllers.odometry = odometry;
     defaultStateOptions.controllers.main = main;
     defaultStateOptions.sensors.lidar = lidar;
 

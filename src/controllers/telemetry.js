@@ -5,12 +5,13 @@ const robotlib = require('robotlib');
  * @param {Object} config
  * @return {Object}
  */
-module.exports = (socket, config, { sensors }) => {
+module.exports = (socket, config, { controllers, sensors }) => {
+  const { odometry } = controllers;
   const { lidar, main } = sensors;
 
   let lidarData = {};
-  let imuData = {};
-  let odometryData = [];
+  let imu = {};
+  let poses = [];
   let lastTimestamp = new Date();
   let fps = {};
 
@@ -26,12 +27,13 @@ module.exports = (socket, config, { sensors }) => {
     }
 
     if (main) {
-      main.on('odometry', (data) => {
-        const { heading } = data;
-
-        odometryData.push(data);
-        imuData = { heading };
+      main.on('odometry', ({ heading }) => {
+        imu = { heading };
       });
+    }
+
+    if (odometry) {
+      odometry.on('pose', pose => poses.push(pose));
     }
   }
 
@@ -39,15 +41,10 @@ module.exports = (socket, config, { sensors }) => {
    * Emit
    */
   function emit() {
-    socket.emit('data', {
-      odometry: odometryData,
-      lidar: lidarData,
-      imu: imuData,
-      fps,
-    });
+    socket.emit('data', { lidar: lidarData, imu, poses, fps });
 
-    odometryData.length = 0;
     lidarData = {};
+    poses.length = 0;
   }
 
   /**
