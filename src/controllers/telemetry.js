@@ -10,6 +10,7 @@ module.exports = (socket, config, { controllers, sensors }) => {
   const { lidar, main } = sensors;
 
   let lidarData = {};
+  let odometryData = [];
   let imu = {};
   let poses = [];
   let lastTimestamp = new Date();
@@ -27,7 +28,8 @@ module.exports = (socket, config, { controllers, sensors }) => {
     }
 
     if (main) {
-      main.on('odometry', ({ heading }) => {
+      main.on('odometry', ({ leftTicks, rightTicks, heading }) => {
+        odometryData.push({ leftTicks, rightTicks })
         imu = { heading };
       });
     }
@@ -41,9 +43,16 @@ module.exports = (socket, config, { controllers, sensors }) => {
    * Emit
    */
   function emit() {
-    socket.emit('data', { lidar: lidarData, imu, poses, fps });
+    socket.emit('data', {
+      lidar: lidarData,
+      odometry: odometryData,
+      imu,
+      poses,
+      fps
+    });
 
     lidarData = {};
+    odometryData.length = 0;
     poses.length = 0;
   }
 

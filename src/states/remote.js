@@ -49,32 +49,32 @@ module.exports = ({ arena, logger, controllers, socket }) => {
 
   function forward() {
     logger.log('forward', 'remote');
-    main.forward(20);
+    main.forward(350);
+    // main.keepHeading(250, 0);
   }
 
   function reverse() {
     logger.log('reverse', 'remote');
-    main.reverse(20);
+    main.reverse(200);
   }
 
   function stopMotors() {
     logger.log('stop motors', 'remote');
-    main.stop();
-
-    setTimeout(main.stop.bind(null, 1), 1000);
+    main.stop()
+      .then(main.stop.bind(null, 1));
   }
 
   function rotateLeft() {
     logger.log('rotateLeft', 'remote');
 
-    main.rotate(20, -90)
+    main.rotate(100, -90)
       .then(main.stop.bind(null, 1));
   }
 
   function rotateRight() {
     logger.log('rotateRight', 'remote');
 
-    main.rotate(20, 90)
+    main.rotate(100, 90)
       .then(main.stop.bind(null, 1));
   }
 

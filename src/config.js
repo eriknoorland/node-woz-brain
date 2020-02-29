@@ -1,33 +1,33 @@
 module.exports = {
   robot: {
-    diameter: 17.5, // cm
+    diameter: 175, // mm
   },
   timeout: { // ms
     start: 1000,
     pause: 100,
   },
-  speed: { // cms/s
+  speed: { // mm/s
     straight: {
-      max: 50,
-      fast: 50,
-      medium: 35,
-      slow: 20,
-      precision: 5,
+      max: 500,
+      fast: 500,
+      medium: 350,
+      slow: 200,
+      precision: 50,
     },
     turn: {
-      fast: 30,
-      slow: 10,
+      fast: 300,
+      slow: 100,
     },
     rotate: {
-      fast: 30,
-      slow: 5,
-      correction: 1,
+      fast: 300,
+      slow: 50,
+      correction: 10,
     },
-    lineFollowing: 15,
+    lineFollowing: 150,
   },
   distance: { // mm
     gap: {
-      width: 4, // cm (options: 30, 15, 8, 4)
+      width: 40, // mm (options: 300, 150, 80, 40)
     },
   },
   pid: {
@@ -41,7 +41,7 @@ module.exports = {
       far: 750, // mm
     },
     can: {
-      diameter: 6.5, // cm
+      diameter: 65, // mm
     },
   },
   color: {

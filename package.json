@@ -1,6 +1,6 @@
 {
   "name": "woz-brain",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "node-ydlidar": "git+https://git@github.com/eriknoorland/node-ydlidar.git",
     "nodemon": "^1.19.4",
     "robotlib": "git+https://github.com/eriknoorland/node-robotlib.git",
-    "serialport": "^8.0.6",
+    "serialport": "^8.0.7",
     "shelljs": "^0.8.3",
     "socket.io": "^2.3.0",
     "woz-main-controller": "git+https://git@github.com/eriknoorland/node-woz-main-controller.git"
