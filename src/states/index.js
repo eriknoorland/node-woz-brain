@@ -1,4 +1,5 @@
 const remote = require('./remote');
+const umbmark = require('./umbmark');
 // const backAndForth = require('./states/backAndForth');
 // const slalom = require('./states/slalom');
 // const superSlalom = require('./states/superSlalom');
@@ -13,6 +14,10 @@ module.exports = [
   {
     name: 'Remote',
     module: remote,
+  },
+  {
+    name: 'UMBMark',
+    module: umbmark,
   },
   // {
   //   name: 'Heen & Weer',
