@@ -23,7 +23,7 @@ module.exports = ({ arena, logger, controllers, socket }) => {
     logger.log('start', 'remote');
 
     // const { x, y } = getInitialPosition(); // FIXME get initial pose util
-    const x = 19; // FIXME rear distance
+    const x = 190; // FIXME rear distance
     const y = (arena.height / 4); // FIXME left distance + (arena.height / 2)
     odometry.setStartPose(x, y + (arena.height / 2));
 
@@ -49,8 +49,7 @@ module.exports = ({ arena, logger, controllers, socket }) => {
 
   function forward() {
     logger.log('forward', 'remote');
-    main.forward(350);
-    // main.keepHeading(250, 0);
+    main.forward(350, 350);
   }
 
   function reverse() {

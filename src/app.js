@@ -27,8 +27,8 @@ const expectedUSBDevices = [
 // FIXME get from config
 const GEAR_RATIO = 46.85;
 const TICKS_PER_REVOLUTION = 48 * GEAR_RATIO;
-const WHEEL_DIAMETER = 6;
-const WHEEL_BASE = 16.8;
+const WHEEL_DIAMETER = 60; // mm
+const WHEEL_BASE = 168; // mm
 const WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 const DISTANCE_PER_TICK = WHEEL_CIRCUMFERENCE / TICKS_PER_REVOLUTION;
 

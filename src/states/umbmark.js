@@ -7,6 +7,8 @@ const robotlib = require('robotlib');
  */
 module.exports = ({ arena, logger, controllers, socket }) => {
   const { main, odometry } = controllers;
+  const straightSpeed = 300;
+  const rotateSpeed = 100;
 
   /**
    * Constructor
@@ -22,7 +24,7 @@ module.exports = ({ arena, logger, controllers, socket }) => {
     logger.log('start', 'umbmark');
 
     // const { x, y } = getInitialPosition(); // FIXME get initial pose util
-    const x = 19; // FIXME rear distance
+    const x = 190; // FIXME rear distance
     const y = (arena.height / 4); // FIXME left distance + (arena.height / 2)
     odometry.setStartPose(x, y + (arena.height / 2));
 
@@ -35,39 +37,21 @@ module.exports = ({ arena, logger, controllers, socket }) => {
   }
 
   async function right() {
-    await main.forward(300, 1000);
-    await robotlib.utils.pause(500);
-    await main.rotate(100, 90);
-    await robotlib.utils.pause(500);
-    await main.forward(300, 1000);
-    await robotlib.utils.pause(500);
-    await main.rotate(100, 90);
-    await robotlib.utils.pause(500);
-    await main.forward(300, 1000);
-    await robotlib.utils.pause(500);
-    await main.rotate(100, 90);
-    await robotlib.utils.pause(500);
-    await main.forward(300, 1000);
-    await robotlib.utils.pause(500);
-    await main.rotate(100, 90);
+    for (let i = 0; i < 4; i++) {
+      await main.forward(straightSpeed, 1000);
+      await robotlib.utils.pause(500);
+      await main.rotate(rotateSpeed, 90);
+      await robotlib.utils.pause(500);
+    }
   }
 
   async function left() {
-    await main.forward(300, 1000);
-    await robotlib.utils.pause(500);
-    await main.rotate(100, -90)
-    await robotlib.utils.pause(500);
-    await main.forward(300, 1000);
-    await robotlib.utils.pause(500);
-    await main.rotate(100, -90)
-    await robotlib.utils.pause(500);
-    await main.forward(300, 1000);
-    await robotlib.utils.pause(500);
-    await main.rotate(100, -90)
-    await robotlib.utils.pause(500);
-    await main.forward(300, 1000);
-    await robotlib.utils.pause(500);
-    await main.rotate(100, -90);
+    for (let i = 0; i < 4; i++) {
+      await main.forward(straightSpeed, 1000);
+      await robotlib.utils.pause(500);
+      await main.rotate(rotateSpeed, -90);
+      await robotlib.utils.pause(500);
+    }
   }
 
   constructor();
