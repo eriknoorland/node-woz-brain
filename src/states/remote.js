@@ -32,6 +32,7 @@ module.exports = ({ arena, logger, controllers, socket }) => {
     socket.on('remote.stop', stopMotors);
     socket.on('remote.rotateLeft', rotateLeft);
     socket.on('remote.rotateRight', rotateRight);
+    socket.on('remote.resetIMU', main.resetIMU);
   }
 
   /**
@@ -45,11 +46,12 @@ module.exports = ({ arena, logger, controllers, socket }) => {
     socket.removeListener('remote.stop', stopMotors);
     socket.removeListener('remote.rotateLeft', rotateLeft);
     socket.removeListener('remote.rotateRight', rotateRight);
+    socket.removeListener('remote.resetIMU', main.resetIMU);
   }
 
   function forward() {
     logger.log('forward', 'remote');
-    main.forward(350, 350);
+    main.forward(250, 1000);
   }
 
   function reverse() {

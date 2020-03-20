@@ -28,7 +28,7 @@ const expectedUSBDevices = [
 const GEAR_RATIO = 46.85;
 const TICKS_PER_REVOLUTION = 48 * GEAR_RATIO;
 const WHEEL_DIAMETER = 60; // mm
-const WHEEL_BASE = 168; // mm
+const WHEEL_BASE = 168.08; // mm
 const WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 const DISTANCE_PER_TICK = WHEEL_CIRCUMFERENCE / TICKS_PER_REVOLUTION;
 
@@ -125,12 +125,30 @@ function onShutdown() {
  * @return {Object}
  */
 function initMainController(portName) {
+  let isReady = false;
+
+  const isReadyTimeout = setTimeout(() => {
+    if (!isReady) {
+      main.isReady();
+    }
+  }, 1000);
+
+  const onInit = () => {
+    isReady = true;
+
+    clearTimeout(isReadyTimeout);
+    logger.log('main controller initialized!', 'app', 'cyan');
+  };
+
+  const setData = () => {
+    // set data (motors, wheels, etc.)
+  };
+
   main = MainController(portName);
 
   main.init()
-    .then(() => {
-      logger.log('main controller initialized!', 'app', 'cyan');
-    });
+    .then(onInit)
+    .then(setData);
 
   return main;
 }
