@@ -25,7 +25,7 @@
     "nodemon": "^1.19.4",
     "robotlib": "git+https://github.com/eriknoorland/node-robotlib.git",
     "serialport": "^8.0.7",
-    "shelljs": "^0.8.3",
+    "shelljs": "^0.8.4",
     "socket.io": "^2.3.0",
     "woz-main-controller": "git+https://git@github.com/eriknoorland/node-woz-main-controller.git"
   }

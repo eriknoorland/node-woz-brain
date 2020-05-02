@@ -28,8 +28,8 @@ module.exports = ({ arena, logger, controllers, socket }) => {
     const y = (arena.height / 4); // FIXME left distance + (arena.height / 2)
     odometry.setStartPose(x, y + (arena.height / 2));
 
-    socket.on('umbmark.left', left);
-    socket.on('umbmark.right', right);
+    socket.on('ArrowLeft', left);
+    socket.on('ArrowRight', right);
   }
 
   function stop() {

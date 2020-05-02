@@ -27,12 +27,12 @@ module.exports = ({ arena, logger, controllers, socket }) => {
     const y = (arena.height / 4); // FIXME left distance + (arena.height / 2)
     odometry.setStartPose(x, y + (arena.height / 2));
 
-    socket.on('remote.forward', forward);
-    socket.on('remote.reverse', reverse);
-    socket.on('remote.stop', stopMotors);
-    socket.on('remote.rotateLeft', rotateLeft);
-    socket.on('remote.rotateRight', rotateRight);
-    socket.on('remote.resetIMU', main.resetIMU);
+    socket.on('ArrowUp', forward);
+    socket.on('ArrowDown', reverse);
+    socket.on('Space', stopMotors);
+    socket.on('ArrowLeft', rotateLeft);
+    socket.on('ArrowRight', rotateRight);
+    socket.on('Numpad0', main.resetIMU);
   }
 
   /**
@@ -41,12 +41,12 @@ module.exports = ({ arena, logger, controllers, socket }) => {
   function stop() {
     logger.log('stop', 'remote');
 
-    socket.removeListener('remote.forward', forward);
-    socket.removeListener('remote.reverse', reverse);
-    socket.removeListener('remote.stop', stopMotors);
-    socket.removeListener('remote.rotateLeft', rotateLeft);
-    socket.removeListener('remote.rotateRight', rotateRight);
-    socket.removeListener('remote.resetIMU', main.resetIMU);
+    socket.removeListener('ArrowUp', forward);
+    socket.removeListener('ArrowDown', reverse);
+    socket.removeListener('Space', stopMotors);
+    socket.removeListener('ArrowLeft', rotateLeft);
+    socket.removeListener('ArrowRight', rotateRight);
+    socket.removeListener('Numpad0', main.resetIMU);
   }
 
   function forward() {

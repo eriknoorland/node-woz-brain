@@ -64,6 +64,7 @@ io.on('connection', (socket) => {
   socket.on('stop', onStop);
   socket.on('shutdown', onShutdown);
   socket.on('selected_arena', (selectedArena) => {
+    logger.log(`arena selected - ${selectedArena.name}`, 'app');
     defaultStateOptions.arena = selectedArena;
   });
 
